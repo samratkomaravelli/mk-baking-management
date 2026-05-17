@@ -25,7 +25,7 @@ const STORAGE_PRODUCTS_KEY = 'mkbaking_products'
 const STORAGE_TESTIMONIALS_KEY = 'mkbaking_testimonials'
 
 export default function AdminPanel() {
-  const { isLoggedIn, logout } = useAuth()
+  const { isLoggedIn, authLoading, logout } = useAuth()
   const router = useRouter()
 
   const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCTS)
@@ -49,10 +49,10 @@ export default function AdminPanel() {
   })
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!authLoading && !isLoggedIn) {
       router.push('/admin-login')
     }
-  }, [isLoggedIn, router])
+  }, [isLoggedIn, authLoading, router])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -151,7 +151,7 @@ export default function AdminPanel() {
     router.push('/admin-login')
   }
 
-  if (!isLoggedIn) {
+  if (authLoading || !isLoggedIn) {
     return null
   }
 
