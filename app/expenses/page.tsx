@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
 
 interface Expense {
   id: number
@@ -21,6 +23,19 @@ export default function ExpensesPage() {
   const [date, setDate] = useState('')
   const [category, setCategory] = useState('Ingredients')
   const [filter, setFilter] = useState('All')
+
+  const { isLoggedIn } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/admin-login')
+    }
+  }, [isLoggedIn, router])
+
+  if (!isLoggedIn) {
+    return null
+  }
 
   const categories = ['Ingredients', 'Supplies', 'Equipment', 'Utilities', 'Other']
 

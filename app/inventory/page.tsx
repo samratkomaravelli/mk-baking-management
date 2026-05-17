@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
 
 interface Item {
   id: number
@@ -21,6 +23,19 @@ export default function InventoryPage() {
   const [quantity, setQuantity] = useState('')
   const [unit, setUnit] = useState('kg')
   const [reorderLevel, setReorderLevel] = useState('')
+
+  const { isLoggedIn } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/admin-login')
+    }
+  }, [isLoggedIn, router])
+
+  if (!isLoggedIn) {
+    return null
+  }
 
   const units = ['kg', 'liter', 'pieces', 'bag', 'box']
 

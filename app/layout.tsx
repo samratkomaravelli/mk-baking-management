@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import PublicNavbar from '@/components/PublicNavbar'
+import Navbar from '@/components/Navbar'
+import { AuthProvider } from '@/context/AuthContext'
 
 export const metadata: Metadata = {
-  title: 'MK Baking - Fresh Homemade Cakes',
+  title: 'MK Bakers - Fresh Homemade Cakes',
   description: 'Order delicious homemade cakes baked with love and care',
 }
 
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PublicNavbar />
-        {children}
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
