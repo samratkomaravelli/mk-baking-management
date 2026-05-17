@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (username: string, password: string): boolean => {
     // Simple hardcoded authentication for demo
     // In production, this would validate against a backend
-    if (username === 'admin' && password === 'admin123') {
+    if (username === 'MounikaKollam' && password === 'I@mMounika') {
       setIsLoggedIn(true)
       setAdminName(username)
       return true
