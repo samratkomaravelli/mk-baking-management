@@ -5,12 +5,16 @@ import { useState } from 'react'
 interface Ingredient {
   id: number
   name: string
+  quantity: string
+  unit: string
   cost: string
 }
 
+const UNITS = ['grams', 'kg', 'ml', 'liters', 'cups', 'tbsp', 'tsp', 'pieces', 'packets']
+
 export default function PriceCalculatorPage() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([
-    { id: 1, name: '', cost: '' },
+    { id: 1, name: '', quantity: '', unit: 'grams', cost: '' },
   ])
   const [laborHours, setLaborHours] = useState('')
   const [hourlyRate, setHourlyRate] = useState('50')
@@ -21,7 +25,7 @@ export default function PriceCalculatorPage() {
   const [productName, setProductName] = useState('')
 
   const addIngredient = () => {
-    setIngredients([...ingredients, { id: Date.now(), name: '', cost: '' }])
+    setIngredients([...ingredients, { id: Date.now(), name: '', quantity: '', unit: 'grams', cost: '' }])
   }
 
   const removeIngredient = (id: number) => {
@@ -29,7 +33,7 @@ export default function PriceCalculatorPage() {
     setIngredients(ingredients.filter(i => i.id !== id))
   }
 
-  const updateIngredient = (id: number, field: 'name' | 'cost', value: string) => {
+  const updateIngredient = (id: number, field: 'name' | 'quantity' | 'unit' | 'cost', value: string) => {
     setIngredients(ingredients.map(i => i.id === id ? { ...i, [field]: value } : i))
   }
 
@@ -74,33 +78,56 @@ export default function PriceCalculatorPage() {
               <span className="text-2xl">🧂</span>
               <h2 className="text-xl font-bold text-gray-800">Raw Materials</h2>
             </div>
-            <p className="text-sm text-gray-500 mb-4">Total cost of all ingredients for the entire batch.</p>
+            <p className="text-sm text-gray-500 mb-4">Enter each ingredient with quantity, unit, and cost for the full batch.</p>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-[1fr_80px_90px_90px_24px] gap-2 mb-1 px-1">
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Ingredient</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Qty</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Unit</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Cost (₹)</span>
+              <span></span>
+            </div>
+
+            <div className="space-y-2">
               {ingredients.map((ingredient, index) => (
-                <div key={ingredient.id} className="flex gap-2 items-center">
+                <div key={ingredient.id} className="grid grid-cols-[1fr_80px_90px_90px_24px] gap-2 items-center">
                   <input
                     type="text"
                     placeholder={`Ingredient ${index + 1}`}
                     value={ingredient.name}
                     onChange={e => updateIngredient(ingredient.id, 'name', e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 flex-1 focus:border-purple-500 focus:outline-none text-sm"
+                    className="border border-gray-300 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none text-sm"
                   />
-                  <div className="relative w-28">
-                    <span className="absolute left-3 top-2.5 text-gray-400 text-sm">₹</span>
+                  <input
+                    type="number"
+                    placeholder="e.g. 200"
+                    value={ingredient.quantity}
+                    onChange={e => updateIngredient(ingredient.id, 'quantity', e.target.value)}
+                    className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
+                    min="0"
+                  />
+                  <select
+                    value={ingredient.unit}
+                    onChange={e => updateIngredient(ingredient.id, 'unit', e.target.value)}
+                    className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
+                  >
+                    {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                  </select>
+                  <div className="relative">
+                    <span className="absolute left-2 top-2.5 text-gray-400 text-sm">₹</span>
                     <input
                       type="number"
-                      placeholder="Cost"
+                      placeholder="0"
                       value={ingredient.cost}
                       onChange={e => updateIngredient(ingredient.id, 'cost', e.target.value)}
-                      className="border border-gray-300 rounded-lg pl-7 pr-3 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
+                      className="border border-gray-300 rounded-lg pl-6 pr-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
                       min="0"
                     />
                   </div>
                   <button
                     onClick={() => removeIngredient(ingredient.id)}
                     disabled={ingredients.length === 1}
-                    className="text-red-400 hover:text-red-600 disabled:opacity-30 text-lg leading-none"
+                    className="text-red-400 hover:text-red-600 disabled:opacity-30 text-base leading-none"
                   >
                     ✕
                   </button>
