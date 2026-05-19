@@ -83,116 +83,58 @@ export default function PriceCalculatorPage() {
             </div>
             <p className="text-xs text-gray-500 mb-4">Enter each ingredient with quantity, unit, and cost for the full batch.</p>
 
-            {/* Column headers — desktop only */}
-            <div className="hidden sm:grid sm:grid-cols-[1fr_70px_85px_85px_28px] gap-2 mb-1 px-1">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Ingredient</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Qty</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Unit</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Cost (₹)</span>
+            {/* Column headers — always visible, aligned to grid */}
+            <div className="grid grid-cols-[1fr_64px_80px_80px_24px] gap-2 mb-1">
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide pl-1">Ingredient</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide pl-1">Qty</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide pl-1">Unit</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide pl-1">Cost (₹)</span>
               <span></span>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {ingredients.map((ingredient, index) => (
-                <div key={ingredient.id} className="bg-gray-50 sm:bg-transparent rounded-lg p-3 sm:p-0">
-                  {/* Mobile: stacked layout */}
-                  <div className="flex gap-2 items-center mb-2 sm:hidden">
-                    <input
-                      type="text"
-                      placeholder={`Ingredient ${index + 1}`}
-                      value={ingredient.name}
-                      onChange={e => updateIngredient(ingredient.id, 'name', e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 flex-1 focus:border-purple-500 focus:outline-none text-sm bg-white"
-                    />
-                    <button
-                      onClick={() => removeIngredient(ingredient.id)}
-                      disabled={ingredients.length === 1}
-                      className="text-red-400 hover:text-red-600 disabled:opacity-30 text-lg leading-none px-1"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 sm:hidden">
-                    <div>
-                      <label className="text-xs text-gray-400 mb-1 block">Qty</label>
-                      <input
-                        type="number"
-                        placeholder="200"
-                        value={ingredient.quantity}
-                        onChange={e => updateIngredient(ingredient.id, 'quantity', e.target.value)}
-                        className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
-                        min="0"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400 mb-1 block">Unit</label>
-                      <select
-                        value={ingredient.unit}
-                        onChange={e => updateIngredient(ingredient.id, 'unit', e.target.value)}
-                        className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
-                      >
-                        {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-400 mb-1 block">Cost (₹)</label>
-                      <div className="relative">
-                        <span className="absolute left-2 top-2.5 text-gray-400 text-xs">₹</span>
-                        <input
-                          type="number"
-                          placeholder="0"
-                          value={ingredient.cost}
-                          onChange={e => updateIngredient(ingredient.id, 'cost', e.target.value)}
-                          className="border border-gray-300 rounded-lg pl-5 pr-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
-                          min="0"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Desktop: single-row layout */}
-                  <div className="hidden sm:grid sm:grid-cols-[1fr_70px_85px_85px_28px] gap-2 items-center">
-                    <input
-                      type="text"
-                      placeholder={`Ingredient ${index + 1}`}
-                      value={ingredient.name}
-                      onChange={e => updateIngredient(ingredient.id, 'name', e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none text-sm"
-                    />
+                <div key={ingredient.id} className="grid grid-cols-[1fr_64px_80px_80px_24px] gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder={`Ingredient ${index + 1}`}
+                    value={ingredient.name}
+                    onChange={e => updateIngredient(ingredient.id, 'name', e.target.value)}
+                    className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
+                  />
+                  <input
+                    type="number"
+                    placeholder="200"
+                    value={ingredient.quantity}
+                    onChange={e => updateIngredient(ingredient.id, 'quantity', e.target.value)}
+                    className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
+                    min="0"
+                  />
+                  <select
+                    value={ingredient.unit}
+                    onChange={e => updateIngredient(ingredient.id, 'unit', e.target.value)}
+                    className="border border-gray-300 rounded-lg px-1 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
+                  >
+                    {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                  </select>
+                  <div className="relative">
+                    <span className="absolute left-2 top-2.5 text-gray-400 text-xs">₹</span>
                     <input
                       type="number"
-                      placeholder="200"
-                      value={ingredient.quantity}
-                      onChange={e => updateIngredient(ingredient.id, 'quantity', e.target.value)}
-                      className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
+                      placeholder="0"
+                      value={ingredient.cost}
+                      onChange={e => updateIngredient(ingredient.id, 'cost', e.target.value)}
+                      className="border border-gray-300 rounded-lg pl-5 pr-1 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
                       min="0"
                     />
-                    <select
-                      value={ingredient.unit}
-                      onChange={e => updateIngredient(ingredient.id, 'unit', e.target.value)}
-                      className="border border-gray-300 rounded-lg px-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm bg-white"
-                    >
-                      {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
-                    </select>
-                    <div className="relative">
-                      <span className="absolute left-2 top-2.5 text-gray-400 text-sm">₹</span>
-                      <input
-                        type="number"
-                        placeholder="0"
-                        value={ingredient.cost}
-                        onChange={e => updateIngredient(ingredient.id, 'cost', e.target.value)}
-                        className="border border-gray-300 rounded-lg pl-6 pr-2 py-2 w-full focus:border-purple-500 focus:outline-none text-sm"
-                        min="0"
-                      />
-                    </div>
-                    <button
-                      onClick={() => removeIngredient(ingredient.id)}
-                      disabled={ingredients.length === 1}
-                      className="text-red-400 hover:text-red-600 disabled:opacity-30 text-base leading-none"
-                    >
-                      ✕
-                    </button>
                   </div>
+                  <button
+                    onClick={() => removeIngredient(ingredient.id)}
+                    disabled={ingredients.length === 1}
+                    className="text-red-400 hover:text-red-600 disabled:opacity-30 text-base leading-none"
+                  >
+                    ✕
+                  </button>
                 </div>
               ))}
             </div>
