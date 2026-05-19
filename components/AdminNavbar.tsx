@@ -23,6 +23,7 @@ export default function AdminNavbar() {
           <li><Link href="/admin/inventory" className="hover:opacity-90 block md:inline">Inventory</Link></li>
           <li><Link href="/admin/recipes" className="hover:opacity-90 block md:inline">Recipes</Link></li>
           <li><Link href="/admin/customers" className="hover:opacity-90 block md:inline">Customers</Link></li>
+          <li><Link href="/admin/price-calculator" className="hover:opacity-90 block md:inline">Price Calculator</Link></li>
           <li><Link href="/" className="hover:opacity-90 block md:inline">← Back to Shop</Link></li>
         </ul>
       </div>
